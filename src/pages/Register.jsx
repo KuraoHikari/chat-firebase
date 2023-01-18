@@ -1,15 +1,24 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Add from '../img/addAvatar.png';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth, storage, db } from '../firebase';
 import { doc, setDoc } from 'firebase/firestore';
 import { useNavigate, Link } from 'react-router-dom';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import { AuthContext } from '../context/AuthContext';
 
 const Register = () => {
   const [err, setErr] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { currentUser } = useContext(AuthContext);
+  useEffect(() => {
+    if (currentUser) {
+      navigate('/');
+    }
+
+    return;
+  }, []);
 
   const handleSubmit = async (e) => {
     setLoading(true);
